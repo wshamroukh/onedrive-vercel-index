@@ -1,6 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { IconName } from '@fortawesome/fontawesome-svg-core'
-import { Dialog, Transition } from '@headlessui/react'
+import { Description, Dialog, DialogPanel, DialogTitle,Transition } from '@headlessui/react'
+
+
+
 import toast, { Toaster } from 'react-hot-toast'
 import { useHotkeys } from 'react-hotkeys-hook'
 
@@ -140,7 +143,8 @@ const Navbar = () => {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Dialog.Overlay className="fixed inset-0 bg-gray-50 dark:bg-gray-800" />
+ 
+              <DialogPanel className="fixed inset-0 bg-gray-50 dark:bg-gray-800" />
             </Transition.Child>
 
             {/* This element is to trick the browser into centering the modal contents. */}
