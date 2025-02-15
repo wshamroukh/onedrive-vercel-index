@@ -1,5 +1,8 @@
 import '@fortawesome/fontawesome-svg-core/styles.css'
 
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
+
 import '../styles/globals.css'
 import '../styles/markdown-github.css'
 
@@ -124,6 +127,8 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       <NextNProgress height={1} color="rgb(156, 163, 175, 0.9)" options={{ showSpinner: false }} />
       <Component {...pageProps} />
+      <Analytics />
+      <SpeedInsights />
     </>
   )
 }
