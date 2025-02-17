@@ -60,7 +60,9 @@ module.exports = {
   links: [
     {
       name: 'GitHub',
-      link: 'https://github.com/syx-413',
+      link: 'https://github.com/wshamroukh',
+      name: 'Telegram',
+      link: 'https://t.me/+JciK8-z3FqhlOWY1',
     },
   ],
 
