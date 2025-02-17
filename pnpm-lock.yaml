@@ -183,6 +183,9 @@ importers:
       i18next-parser:
         specifier: ^7.6.0
         version: 7.9.0
+      katex:
+        specifier: ^0.16.21
+        version: 0.16.21
       postcss:
         specifier: ^8.4.21
         version: 8.5.2

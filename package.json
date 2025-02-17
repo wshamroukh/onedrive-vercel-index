@@ -71,6 +71,7 @@
     "eslint-config-next": "13.5.8",
     "eslint-config-prettier": "^8.6.0",
     "i18next-parser": "^7.6.0",
+    "katex": "^0.16.21",
     "postcss": "^8.4.21",
     "prettier": "^3.5.1",
     "prettier-plugin-tailwindcss": "^0.6.11",
@@ -91,6 +92,14 @@
       "next",
       "next/core-web-vitals",
       "prettier"
+    ]
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@vercel/speed-insights",
+      "core-js",
+      "es5-ext",
+      "esbuild"
     ]
   }
 }
