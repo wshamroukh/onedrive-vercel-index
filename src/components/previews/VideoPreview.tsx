@@ -6,7 +6,8 @@ import { useTranslation } from 'next-i18next'
 
 import axios from 'axios'
 import toast from 'react-hot-toast'
-import Plyr from 'plyr-react'
+import dynamic from 'next/dynamic';
+const Plyr = dynamic(() => import('plyr-react'), { ssr: false });
 import { useAsync } from 'react-async-hook'
 import { useClipboard } from 'use-clipboard-copy'
 
@@ -33,28 +34,30 @@ const VideoPlayer: FC<{
   mpegts: any
 }> = ({ videoName, videoUrl, width, height, thumbnail, subtitle, isFlv, mpegts }) => {
   useEffect(() => {
-    // Really really hacky way to inject subtitles as file blobs into the video element
-    axios
-      .get(subtitle, { responseType: 'blob' })
-      .then(resp => {
-        const track = document.querySelector('track')
-        track?.setAttribute('src', URL.createObjectURL(resp.data))
-      })
-      .catch(() => {
-        console.log('Could not load subtitle.')
-      })
-
-    if (isFlv) {
-      const loadFlv = () => {
-        // Really hacky way to get the exposed video element from Plyr
-        const video = document.getElementById('plyr')
-        const flv = mpegts.createPlayer({ url: videoUrl, type: 'flv' })
-        flv.attachMediaElement(video)
-        flv.load()
+    if (typeof window !== "undefined") {
+      axios
+        .get(subtitle, { responseType: 'blob' })
+        .then(resp => {
+          const track = document.querySelector('track');
+          track?.setAttribute('src', URL.createObjectURL(resp.data));
+        })
+        .catch(() => {
+          console.log('Could not load subtitle.');
+        });
+  
+      if (isFlv) {
+        const loadFlv = () => {
+          const video = document.getElementById('plyr');
+          if (video) {
+            const flv = mpegts.createPlayer({ url: videoUrl, type: 'flv' });
+            flv.attachMediaElement(video);
+            flv.load();
+          }
+        };
+        loadFlv();
       }
-      loadFlv()
     }
-  }, [videoUrl, isFlv, mpegts, subtitle])
+  }, [videoUrl, isFlv, mpegts, subtitle]);
 
   // Common plyr configs, including the video source and plyr options
   const plyrSource = {
