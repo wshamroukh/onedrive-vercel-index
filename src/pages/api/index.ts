@@ -199,11 +199,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return
   }
 
-  const accessToken = await getAccessToken()
+  let accessToken: string
+  try {
+    accessToken = await getAccessToken()
+  } catch (err: any) {
+    console.error('[/api] getAccessToken threw (likely Redis connection failure):', err.message)
+    res.status(500).json({ error: 'Redis connection failed. Check REDIS_URL environment variable.', details: err.message })
+    return
+  }
 
   // Return error 403 if access_token is empty
   if (!accessToken) {
-    res.status(403).json({ error: 'No access token.' })
+    console.warn('[/api] No access token returned — OAuth may not have been completed. Visit /onedrive-vercel-index-oauth/step-1 to authenticate.')
+    res.status(403).json({ error: 'No access token. OAuth not completed — visit /onedrive-vercel-index-oauth/step-1 to authenticate.' })
     return
   }
 
@@ -286,7 +294,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(200).json({ file: identityData })
     return
   } catch (error: any) {
-    res.status(error?.response?.code ?? 500).json({ error: error?.response?.data ?? 'Internal server error.' })
+    console.error('[/api] OneDrive API request failed:', error?.response?.status, JSON.stringify(error?.response?.data))
+    res.status(error?.response?.status ?? 500).json({ error: error?.response?.data ?? 'Internal server error.' })
     return
   }
 }
